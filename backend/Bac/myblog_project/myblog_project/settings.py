@@ -1,11 +1,4 @@
-import os  # Assure# Quick-staSECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-#@one!jnc*ba%%-fih^jug5y$+%5qgcf(lj95)q5bk*3zizkee')t development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-#@one!jnc*ba%%-fih^jug5y$+%5qgcf(lj95)q5bk*3zizkee')
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true''importer le module 'os' au début du fichier
+import os
 """
 Django settings for myblog_project project.
 
@@ -31,9 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-#@one!jnc*ba%%-fih^jug5y$+%5qgcf(lj95)q5bk*3zizkee')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# Read DEBUG from environment for deploy flexibility
+DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
-ALLOWED_HOSTS = ['*']  # Pour Vercel, permettre tous les hosts
+ALLOWED_HOSTS = ['*']  # Pour Vercel/Render, permettre tous les hosts en dev
 
 # Vercel configuration
 VERCEL_ENV = os.environ.get('VERCEL_ENV')
@@ -47,6 +41,14 @@ if RENDER_EXTERNAL_URL:
     if host not in ALLOWED_HOSTS:
         ALLOWED_HOSTS.append(host)
 
+# Database configuration using DATABASE_URL if provided (recommended on Render)
+import dj_database_url
+DATABASE_URL = os.environ.get('DATABASE_URL')
+if DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600),
+    }
+
 
 # Application definition
 
@@ -57,25 +59,24 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'blog',  # Modifié pour ne plus utiliser la configuration d'application
+    'blog',
 ]
-# Avant : STATIC_URL = '/static/',
-# Remplacer / ajouter :
+
+# Static files configuration
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
     os.path.join(BASE_DIR, 'blog', 'static'),
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# Fichiers uploadés (images, vidéos)
+# Media files (user uploads)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Pour servir les fichiers statiques sur Vercel
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -89,8 +90,8 @@ ROOT_URLCONF = 'myblog_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],  # Vous pouvez laisser cette ligne telle quelle
-        'APP_DIRS': True,  # Assurez-vous que cette valeur est 'True'
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -105,12 +106,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'myblog_project.wsgi.application'
 
 
-# Database configuration moved below for Vercel compatibility
-
-
 # Password validation
-# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -128,39 +124,29 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # Internationalization
-# https://docs.djangoproject.com/en/5.2/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.2/howto/static-files/
-
-STATIC_URL = '/static/'
-
-# Configuration simplifiée des fichiers statiques
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'blog', 'static'),
-]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-# Configuration pour servir les fichiers statiques avec WhiteNoise
+# WhiteNoise static files storage (still used for static assets)
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Media files (uploaded by users)
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# Optional S3 media storage (set env vars to enable)
+if os.environ.get('AWS_ACCESS_KEY_ID') and os.environ.get('AWS_SECRET_ACCESS_KEY') and os.environ.get('AWS_STORAGE_BUCKET_NAME'):
+    # Use django-storages to store uploaded media on S3-compatible storage
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    AWS_QUERYSTRING_AUTH = False
+    AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME', None)
+    AWS_S3_CUSTOM_DOMAIN = os.environ.get('AWS_S3_CUSTOM_DOMAIN', None)
+else:
+    # Local media files
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 
-# Database pour Vercel (SQLite peut poser problème)
+
+# Database configuration
 if VERCEL_ENV:
-    # Sur Vercel on peut écrire dans /tmp (durée de vie = invocation).
-    # Utiliser un fichier dans /tmp pour permettre migrations + requêtes.
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -168,7 +154,6 @@ if VERCEL_ENV:
         }
     }
 else:
-    # Configuration par défaut pour développement
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -177,6 +162,4 @@ else:
     }
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

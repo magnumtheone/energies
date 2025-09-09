@@ -3,7 +3,7 @@ services:
     name: masco-web
     env: python
     plan: free
-    buildCommand: "python backend/Bac/myblog_project/manage.py collectstatic --noinput"
-    startCommand: "gunicorn myblog_project.wsgi:application --bind 0.0.0.0:$PORT"
+  buildCommand: "python backend/Bac/myblog_project/manage.py collectstatic --noinput --settings=myblog_project.settings"
+  startCommand: "gunicorn myblog_project.wsgi:application --bind 0.0.0.0:$PORT"
     region: oregon
     autoDeploy: true
