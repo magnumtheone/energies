@@ -28,6 +28,11 @@ DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
 ALLOWED_HOSTS = ['*']  # Pour Vercel, permettre tous les hosts
 
+# Vercel configuration
+VERCEL_ENV = os.environ.get('VERCEL_ENV')
+if VERCEL_ENV:
+    ALLOWED_HOSTS = ['.vercel.app', '.now.sh'] + ALLOWED_HOSTS
+
 
 # Application definition
 
@@ -56,6 +61,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Pour servir les fichiers statiques sur Vercel
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -85,15 +91,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'myblog_project.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+# Database configuration moved below for Vercel compatibility
 
 
 # Password validation
@@ -131,23 +129,44 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-    os.path.join(BASE_DIR, 'blog', 'static'),
-    os.path.join(BASE_DIR, '../../../frontend'),  # Chemin vers le dossier frontend
-]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Configuration pour Vercel
+if VERCEL_ENV:
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, 'blog', 'static'),
+    ]
+    # Pas de STATIC_ROOT sur Vercel, les fichiers statiques sont servis directement
+else:
+    # Configuration pour développement local
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, 'static'),
+        os.path.join(BASE_DIR, 'blog', 'static'),
+        os.path.join(BASE_DIR, '../../../frontend'),  # Chemin vers le dossier frontend
+    ]
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Media files (uploaded by users)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# CORS settings for API calls from frontend
-CORS_ALLOW_ALL_ORIGINS = True  # Pour le développement seulement
-CORS_ALLOWED_ORIGINS = [
-    "http://127.0.0.1:8000",
-    "http://localhost:8000",
-]
+# Database pour Vercel (SQLite peut poser problème)
+if VERCEL_ENV:
+    # Sur Vercel on peut écrire dans /tmp (durée de vie = invocation).
+    # Utiliser un fichier dans /tmp pour permettre migrations + requêtes.
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': '/tmp/db.sqlite3',
+        }
+    }
+else:
+    # Configuration par défaut pour développement
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

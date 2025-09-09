@@ -1,0 +1,25 @@
+# Vercel ignore file
+frontend/images_unused/
+*.pyc
+__pycache__/
+*.log
+.DS_Store
+.env
+.venv
+venv/
+env/
+*.sqlite3
+db.sqlite3
+node_modules/
+*.bat
+*.ps1
+DESIGN_UNIFORME_GUIDE.md
+INTEGRATION_IMAGES_VIDEOS_GUIDE.md
+GITHUB_DEPLOYMENT_GUIDE.md
+README.md
+organize_images.py
+fix_*.py
+test_*.py
+finalize_for_github.py
+setup_masco.bat
+start_masco_server.bat

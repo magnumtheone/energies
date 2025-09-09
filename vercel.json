@@ -3,25 +3,33 @@
   "builds": [
     {
       "src": "wsgi.py",
-      "use": "@vercel/python"
-    },
-    {
-      "src": "backend/Bac/myblog_project/blog/static/**",
-      "use": "@vercel/static"
+      "use": "@vercel/python",
+      "config": {
+        "maxLambdaSize": "15mb"
+      }
     }
   ],
   "routes": [
-    {
-      "src": "/static/(.*)",
-      "dest": "/backend/Bac/myblog_project/blog/static/$1"
-    },
     {
       "src": "/(.*)",
       "dest": "/wsgi.py"
     }
   ],
   "env": {
-    "DJANGO_SETTINGS_MODULE": "backend.Bac.myblog_project.myblog_project.settings",
-    "DEBUG": "False"
+    "DJANGO_SETTINGS_MODULE": "myblog_project.settings",
+    "DEBUG": "False",
+    "VERCEL_ENV": "production",
+    "PYTHONPATH": "/var/task:/var/task/backend:/var/task/backend/Bac:/var/task/backend/Bac/myblog_project"
+  },
+  "build": {
+    "env": {
+      "DJANGO_SETTINGS_MODULE": "myblog_project.settings",
+      "VERCEL_ENV": "production"
+    }
+  },
+  "functions": {
+    "wsgi.py": {
+      "runtime": "python3.9"
+    }
   }
 }
