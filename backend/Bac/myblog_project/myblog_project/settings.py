@@ -1,4 +1,11 @@
-import os  # Assurez-vous d'importer le module 'os' au début du fichier
+import os  # Assure# Quick-staSECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-#@one!jnc*ba%%-fih^jug5y$+%5qgcf(lj95)q5bk*3zizkee')t development settings - unsuitable for production
+# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-#@one!jnc*ba%%-fih^jug5y$+%5qgcf(lj95)q5bk*3zizkee')
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true''importer le module 'os' au début du fichier
 """
 Django settings for myblog_project project.
 
@@ -21,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-#@one!jnc*ba%%-fih^jug5y$+%5qgcf(lj95)q5bk*3zizkee'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-#@one!jnc*ba%%-fih^jug5y$+%5qgcf(lj95)q5bk*3zizkee')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
@@ -32,6 +39,13 @@ ALLOWED_HOSTS = ['*']  # Pour Vercel, permettre tous les hosts
 VERCEL_ENV = os.environ.get('VERCEL_ENV')
 if VERCEL_ENV:
     ALLOWED_HOSTS = ['.vercel.app', '.now.sh'] + ALLOWED_HOSTS
+
+# Render configuration
+RENDER_EXTERNAL_URL = os.environ.get('RENDER_EXTERNAL_URL')
+if RENDER_EXTERNAL_URL:
+    host = RENDER_EXTERNAL_URL.replace('https://', '').replace('http://', '')
+    if host not in ALLOWED_HOSTS:
+        ALLOWED_HOSTS.append(host)
 
 
 # Application definition
