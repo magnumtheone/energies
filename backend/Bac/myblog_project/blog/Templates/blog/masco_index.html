@@ -1,26 +1,39 @@
 {% load static %}
 <!DOCTYPE html> 
-<html lang="fr"> 
+<html lang="fr" class="scroll-smooth"> 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Masco Énergie et Construction — conception, réalisation et accompagnement de projets d'infrastructure en RDC (Kisangani).">
     <title>Masco Énergie et Construction</title>
     <!-- Favicon & Open Graph -->
-    <link rel="icon" href="{% static 'images/logo.png' %}" type="image/svg+xml">
+    <link rel="icon" href="{% static 'blog/images/logo.png' %}" type="image/svg+xml">
     <meta property="og:title" content="Masco Énergie et Construction">
     <meta property="og:description" content="Conception et réalisation de projets d'infrastructure innovants en RDC.">
-    <meta property="og:image" content="{% static 'images/logo.png' %}">
+    <meta property="og:image" content="{% static 'blog/images/logo.png' %}">
+    
+    <!-- Tailwind CSS via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome for icons (fixed link) -->
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="{% static 'pages/style.css' %}">
+    
+    <!-- Masco Design System -->
+    <link rel="stylesheet" href="{% static 'blog/css/masco-design-system.css' %}">
+    <link rel="stylesheet" href="{% static 'blog/css/masco-style.css' %}">
     <style>
     /* minimal CSS kept while converting to Tailwind utilities */
+    html {
+        scroll-behavior: smooth;
+    }
     .skip-link{position:absolute;left:-999px;top:auto;width:1px;height:1px;overflow:hidden}
     .skip-link:focus{position:static;width:auto;height:auto;margin:0;padding:.5rem 1rem;background:#fff;color:#1a3a5e;border:2px solid #1a3a5e;border-radius:6px}
-    body{font-family:'Inter',sans-serif}
+    body{font-family:'Inter',sans-serif; color:#333;}
     .modal-backdrop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.6);z-index:60}
     .modal{background:#fff;border-radius:8px;overflow:auto;max-height:90vh}
     /* Hero stacking (moved to style.css for maintainability) */
@@ -51,7 +64,7 @@
                 <!-- Placeholder for Masco Logo - Replace with actual 
 logo image --> 
                 <img 
-src="{% static 'images/logo.png' %}" alt="Masco 
+src="{% static 'blog/images/logo.png' %}" alt="Masco 
 Logo"> 
                 <span style="color: #e67e22;">MASCO</span> 
             </a> 
@@ -96,30 +109,30 @@ stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7
     <!-- Hero Section (Accueil) --> 
     <section id="hero" class="relative" data-anim="zoom-in"> 
         <!-- Clean background layers using class .hero-background --> 
-        <div class="hero-background active" style="background-image:url('{% static 'images/panneau.jpg' %}');"></div> 
-        <div class="hero-background" style="background-image:url('{% static 'images/ferre.jpeg' %}');"></div> 
-        <div class="hero-background" style="background-image:url('{% static 'images/Projet construction.jpeg' %}');"></div> 
-        <div class="hero-background" style="background-image:url('{% static 'images/ouvrier.jpeg' %}');"></div> 
-        <div class="hero-background" style="background-image:url('{% static 'images/courtier.jpg' %}');"></div> 
+        <div class="hero-background active" style="background-image:url('{% static 'blog/images/panneau.jpg' %}');"></div> 
+        <div class="hero-background" style="background-image:url('{% static 'blog/images/ferre.jpeg' %}');"></div> 
+        <div class="hero-background" style="background-image:url('{% static 'blog/images/Projet construction.jpeg' %}');"></div> 
+        <div class="hero-background" style="background-image:url('{% static 'blog/images/ouvrier.jpeg' %}');"></div> 
+        <div class="hero-background" style="background-image:url('{% static 'blog/images/courtier.jpg' %}');"></div> 
         <!-- Overlay for better text readability --> 
         <div class="overlay" aria-hidden="true"></div> 
         <div class="max-w-4xl mx-auto px-4 text-center py-16 hero-content content"> 
-            <h1 class="text-4xl md:text-5xl font-extrabold text-primary mb-4">Construire l'Afrique,<br/>Concevoir l'avenir.</h1> 
-            <p class="text-lg md:text-xl text-gray-700 mb-6">Masco Énergie et Construction, fondée en 2012 et basée à Kisangani en RDC, est dédiée à la conception, la réalisation et l'accompagnement de projets d'infrastructure innovants.</p> 
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-4">Construire l'Afrique,<br/>Concevoir l'avenir.</h1> 
+            <p class="text-lg md:text-xl text-white mb-6">Masco Énergie et Construction, fondée en 2012 et basée à Kisangani en RDC, est dédiée à la conception, la réalisation et l'accompagnement de projets d'infrastructure innovants.</p> 
             <div class="flex items-center justify-center gap-4 flex-wrap"> 
-                <a href="#services" class="cta-primary">Nos services</a> 
-                <a href="#submit-project" class="cta-secondary">Soumettre un projet</a> 
+                <a href="#services" class="cta-primary hover:bg-orange-500 transition-all duration-300">Nos services</a> 
+                <a href="#submit-project" class="cta-secondary hover:bg-primary transition-all duration-300">Soumettre un projet</a> 
             </div> 
         </div> 
     </section> 
 
     <!-- Photo Gallery -->
     <!-- Team Section -->
-    <section id="team" class="py-12" data-anim="fade-up">
-        <div class="max-w-6xl mx-auto px-4">
+    <section id="team" class="py-12 text-center" data-anim="fade-up">
+        <div class="max-w-6xl mx-auto px-4 text-center">
             <h2 class="text-3xl font-bold text-primary mb-6 fade-in-on-scroll">Notre Équipe</h2>
             <p class="text-gray-600 mb-6 fade-in-on-scroll">Une équipe pluridisciplinaire dédiée aux projets d'infrastructures.</p>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-items-center">
                 <div class="bg-white rounded-lg p-4 text-center fade-in-on-scroll">
                     <img src="{% static 'blog/images/Chairman.jpg' %}" alt="Gabriel" class="w-28 h-28 object-cover rounded-full mx-auto mb-3">
                     <h4 class="font-semibold text-primary">Gabriel MADUA MASUDI</h4>
@@ -185,13 +198,12 @@ stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7
     </div>
  
     <!-- About Section (Qui sommes-nous ?) --> 
-    <section id="about" data-anim="fade-up"> 
-        <div class="max-w-6xl mx-auto px-4"> 
-            <div class="about-content-wrapper fade-in-on-scroll"> 
-                <div class="about-text-content"> 
-                    <h2 class="text-primary-blue">Qui sommes-nous 
-?</h2> 
-                    <p> 
+    <section id="about" data-anim="fade-up" class="py-16"> 
+        <div class="max-w-6xl mx-auto px-4 text-center"> 
+            <div class="about-content-wrapper fade-in-on-scroll max-w-4xl mx-auto"> 
+                <div class="about-text-content mx-auto"> 
+                    <h2 class="text-2xl md:text-2xl font-extrabold text-primary mb-6">Qui sommes-nous ?</h2> 
+                    <p class="max-w-2xl mx-auto text-gray-600 leading-relaxed"> 
                         Masco Énergie et Construction est une Société 
 Anonyme (SA) créée en 2012, basée à Kisangani, République Démocratique 
 du Congo. Nous sommes un acteur majeur dans le génie civil, les 
@@ -204,9 +216,9 @@ accompagner des projets d’infrastructure innovants, en offrant des
 services de consultance, d’études de faisabilité, et de facilitation 
 institutionnelle en RDC. 
                     </p> 
-                    <a href="#" class="text-secondary-orange">En 
+                                    <!--<a href="#" class="text-secondary-orange">En 
 savoir plus sur notre histoire <i class="fas fa-arrow-right 
-ml-2"></i></a> 
+ml-2"></i></a>-->
                 </div> 
                 <!-- Old team-section removed (replaced by Team section earlier) -->
             </div> 
@@ -219,7 +231,7 @@ ml-2"></i></a>
 <!-- About Section (Qui sommes-nous ?) -->
     <section id="about">
         <div class="container">
-            <div class="partners-section fade-in-on-scroll">
+            <div class="partners-section fade-in-on-scroll text-center">
                 <!-- Reduced-size video block to the right -->
                     <h3 class="text-primary">Vidéo de présentation du projet phare</h3>
                     <p class="text-gray-600 mb-3">Découvrez en quelques minutes le projet phare de Masco.</p>
@@ -229,7 +241,7 @@ ml-2"></i></a>
                             Votre navigateur ne supporte pas la balise vidéo. Déposez le fichier <code>presentation.mp4</code> dans <code>frontend/vidéos/</code> pour l'activer.
                         </video>
                     </div>
-                    <details class="mt-2 text-sm text-gray-600">
+                    <details class="mt-2 text-sm text-gray-600 mx-auto max-w-2xl">
                         <summary class="font-semibold">Transcription / notes de la présentation</summary>
                         <p class="mt-2">(Vidéo de presentationde du projet phare.)</p>
                     </details>
@@ -246,7 +258,7 @@ ml-2"></i></a>
                     <div class="train-icon" aria-hidden="true"><i class="fas fa-train"></i></div>
                     <h3 class="text-2xl font-bold text-primary-blue mb-2">Renaissance du chemin de fer Kisangani–Ubundu</h3>
                     <p class="text-gray-700 mb-2">Jadis, le train Kisangani–Ubundu grondait au rythme du fleuve et ouvrait la voie aux échanges. Le projet vise la réhabilitation et la modernisation de la ligne pour relancer l’activité économique.</p>
-                    <div class="project-cta-centered"><a href="project-kisangani.html" class="btn btn-primary">Voir la fiche projet</a></div>
+                    <!--<div class="project-cta-centered"><a href="project-kisangani.html" class="btn btn-primary">Voir la fiche projet</a></div>-->
                 </div>
 
                 <!-- Mini panneau publicitaire : carrousel généré dynamiquement -->
@@ -369,6 +381,45 @@ ml-2"></i></a>
             });
         })();
     </script>
+
+    <script>
+    // Nouveau script pour le mini-banner
+    (function(){
+        const banner = document.getElementById('banner-swiper');
+        if (!banner) return;
+        
+        // Images pour le slider
+        const images = [
+            'IMG-20250907-WA0047.jpg',
+            'IMG-20250907-WA0173.jpg',
+            'IMG-20250907-WA0039.jpg',
+            'IMG-20250907-WA0064.jpg',
+            'IMG-20250907-WA0116.jpg'
+        ];
+        
+        let currentIndex = 0;
+        
+        // Fonction pour changer l'image
+        function changeImage() {
+            const slides = banner.querySelectorAll('.swiper-slide');
+            slides.forEach((slide, index) => {
+                slide.style.opacity = index === currentIndex ? '1' : '0';
+            });
+            currentIndex = (currentIndex + 1) % slides.length;
+        }
+        
+        // Changer l'image toutes les 3 secondes
+        setInterval(changeImage, 3000);
+        
+        // Animation au survol
+        banner.parentElement.addEventListener('mouseenter', function() {
+            this.style.transform = 'scale(1.05)';
+        });
+        
+        banner.parentElement.addEventListener('mouseleave', function() {
+            this.style.transform = 'scale(1)';
+        });
+    })();
     <script>
     // Generate 50 slides for mini-ad carousel and partner logos + modal
     (function(){
@@ -439,55 +490,111 @@ ml-2"></i></a>
             </div> 
         </div> 
     </section> 
- 
+
+    <!-- Mini panneau publicitaire -->
+    <section id="mini-banner" class="py-8 bg-gray-100" data-anim="fade-up">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="relative overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                <div class="swiper-container" id="banner-swiper">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide relative">
+                            <img src="{% static 'blog/images/IMG-20250907-WA0047.jpg' %}" class="w-full h-48 md:h-64 object-cover" alt="Projet Masco">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6">
+                                <h3 class="text-white text-xl font-bold">Expertise en Construction</h3>
+                                <p class="text-white/90">Des projets d'envergure réalisés avec excellence</p>
+                            </div>
+                        </div>
+                        <div class="swiper-slide relative">
+                            <img src="{% static 'blog/images/IMG-20250907-WA0173.jpg' %}" class="w-full h-48 md:h-64 object-cover" alt="Services Masco">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6">
+                                <h3 class="text-white text-xl font-bold">Infrastructure ferroviaire</h3>
+                                <p class="text-white/90">Développement des transports modernes en RDC</p>
+                            </div>
+                        </div>
+                        <div class="swiper-slide relative">
+                            <img src="{% static 'blog/images/IMG-20250907-WA0039.jpg' %}" class="w-full h-48 md:h-64 object-cover" alt="Projet Masco">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6">
+                                <h3 class="text-white text-xl font-bold">Ingénierie civile</h3>
+                                <p class="text-white/90">Solutions durables pour l'avenir de la RDC</p>
+                            </div>
+                        </div>
+                        <div class="swiper-slide relative">
+                            <img src="{% static 'blog/images/IMG-20250907-WA0064.jpg' %}" class="w-full h-48 md:h-64 object-cover" alt="Projet Masco">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6">
+                                <h3 class="text-white text-xl font-bold">Construction durable</h3>
+                                <p class="text-white/90">Des infrastructures respectueuses de l'environnement</p>
+                            </div>
+                        </div>
+                        <div class="swiper-slide relative">
+                            <img src="{% static 'blog/images/IMG-20250907-WA0116.jpg' %}" class="w-full h-48 md:h-64 object-cover" alt="Projet Masco">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6">
+                                <h3 class="text-white text-xl font-bold">Innovation énergétique</h3>
+                                <p class="text-white/90">Technologies avancées pour l'avenir énergétique</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Projects Section -->
     <section id="projects" class="py-16 md:py-24 bg-white" data-anim="fade-left">
         <div class="max-w-6xl mx-auto px-4 text-center">
             <h2 class="text-4xl font-bold text-primary mb-12">Nos Projets</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8"> 
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8"> 
                 <!-- Project 1 -->
                 <article class="bg-white rounded-lg shadow-md overflow-hidden"> 
                     <div class="relative w-full h-56 md:h-64 overflow-hidden"> 
-                        <img src="{% static 'blog/images/MASCO 1.png' %}" alt="Construction d'une ligne ferroviaire" loading="lazy" class="w-full h-full object-cover"> 
+                        <img src="{% static 'blog/images/maqtt (1).jpg' %}" alt="Maquette projet 1" loading="lazy" class="w-full h-full object-cover"> 
                         <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-4"> 
-                            <span class="text-white font-semibold">Maquette</span>
+                            <span class="text-white font-semibold">Maquette 1</span>
                         </div>
                     </div>
                     <div class="p-5 text-left"> 
                         <h3 class="text-xl font-semibold text-primary mb-2">Construction d'une ligne ferroviaire</h3>
                         <p class="text-gray-600">Projet majeur de construction d'une nouvelle ligne ferroviaire dans la région de Kisangani, RDC.</p>
-                        <div class="mt-4 flex gap-3"> 
-                            <a href="#" class="inline-flex items-center px-4 py-2 rounded-full bg-primary text-white font-semibold"><i class="fas fa-project-diagram mr-2"></i>Voir le projet</a>
-                            <!--<button class="inline-flex items-center px-4 py-2 rounded-full bg-orange-500 text-white font-semibold" aria-controls="project-modal" id="open-project-gallery-1"><i class="fas fa-image mr-2"></i>Maquette</button>-->
-                        </div>
+                        <!-- Buttons removed as requested -->
                     </div>
                 </article>
-                <!-- Project 1 (duplicate) -->
+                <!-- Project 2 -->
                 <article class="bg-white rounded-lg shadow-md overflow-hidden"> 
                     <div class="relative w-full h-56 md:h-64 overflow-hidden"> 
-                        <img src="{% static 'blog/images/ferre.png' %}" alt="Construction d'une ligne ferroviaire" loading="lazy" class="w-full h-full object-cover"> 
+                        <img src="{% static 'blog/images/maqtt (2).jpg' %}" alt="Maquette projet 2" loading="lazy" class="w-full h-full object-cover"> 
                         <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-4"> 
-                            <span class="text-white font-semibold">Ligne ferroviaire</span>
+                            <span class="text-white font-semibold">Maquette 2</span>
                         </div>
                     </div>
                     <div class="p-5 text-left"> 
-                        <h3 class="text-xl font-semibold text-primary mb-2">Construction d'une ligne ferroviaire</h3>
-                        <p class="text-gray-600">Projet majeur de construction d'une nouvelle ligne ferroviaire dans la région de Kisangani, RDC.</p>
-                        <div class="mt-4 flex gap-3"> 
-                            <a href="#" class="inline-flex items-center px-4 py-2 rounded-full bg-primary text-white font-semibold"><i class="fas fa-project-diagram mr-2"></i>Voir le projet</a>
-                            <!--<button class="inline-flex items-center px-4 py-2 rounded-full bg-orange-500 text-white font-semibold" aria-controls="project-modal" id="open-project-gallery-1"><i class="fas fa-image mr-2"></i>Maquette</button>-->
+                        <h3 class="text-xl font-semibold text-primary mb-2">Infrastructure portuaire</h3>
+                        <p class="text-gray-600">Développement d'infrastructures portuaires modernes pour faciliter le transport fluvial en RDC.</p>
+                        <!-- Buttons removed as requested -->
+                    </div>
+                </article>
+                <!-- Project 3 -->
+                <article class="bg-white rounded-lg shadow-md overflow-hidden"> 
+                    <div class="relative w-full h-56 md:h-64 overflow-hidden"> 
+                        <img src="{% static 'blog/images/maqtt (3).jpg' %}" alt="Maquette projet 3" loading="lazy" class="w-full h-full object-cover"> 
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-4"> 
+                            <span class="text-white font-semibold">Maquette 3</span>
                         </div>
                     </div>
+                    <div class="p-5 text-left"> 
+                        <h3 class="text-xl font-semibold text-primary mb-2">Bâtiments administratifs</h3>
+                        <p class="text-gray-600">Construction de complexes administratifs modernes dans les principales villes de la RDC.</p>
+                        <!-- Buttons removed as requested -->
+                    </div>
+                </article>
                 </article>
             </div>
 
             <div class="mt-12 grid grid-cols-1"> 
                 <div class="bg-white rounded-lg shadow-md p-6 text-left"> 
-                    <img src="{% static 'blog/images/ferre.png' %}" alt="Kisangani–Ubundu" class="w-full h-64 object-cover rounded-md mb-4" loading="lazy"> 
+                    <img src="{% static 'blog/images/ferre.jpeg' %}" alt="Kisangani–Ubundu" class="w-full h-64 object-cover rounded-md mb-4" loading="lazy"> 
                     <h3 class="text-2xl font-bold text-primary">Projet de réhabilitation : Kisangani–Ubundu</h3>
                     <p class="text-gray-700 mt-2">Réhabilitation du chemin de fer Kisangani–Ubundu (115 km) pour renforcer la connectivité régionale, réduire les coûts logistiques et stimuler le développement local.</p>
                     <div class="mt-4 flex gap-3"> 
-                        <a href="project-kisangani.html" class="inline-flex items-center px-4 py-2 rounded-full bg-primary text-white font-semibold">Détails</a>
+                        <!--<a href="project-kisangani.html" class="inline-flex items-center px-4 py-2 rounded-full bg-primary text-white font-semibold">Détails</a>-->
                         <!--<button class="inline-flex items-center px-4 py-2 rounded-full bg-orange-500 text-white font-semibold" id="open-project-gallery">Maquette</button>-->
                     </div>
                 </div>
@@ -506,7 +613,7 @@ ml-2"></i></a>
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
                 {% for article in articles %}
                 <a href="{% url 'detail_article' id_article=article.id %}" class="bg-gray-50 rounded-xl shadow-lg overflow-hidden flex flex-col animated-section slide-up hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
-                    <div class="h-48 bg-cover bg-center" style="background-image: url('{% if article.image %}{{ article.image.url }}{% else %}{% static 'images/default-article.jpg' %}{% endif %}');"></div>
+                    <div class="h-48 bg-cover bg-center" style="background-image: url('{% if article.image %}{{ article.image.url }}{% else %}{% static 'blog/images/default-article.jpg' %}{% endif %}');"></div>
                     <div class="p-6 flex-grow flex flex-col">
                         <div class="flex items-center text-sm text-gray-500 mb-3">
                             <i class="fas fa-calendar-alt mr-2"></i>
@@ -552,12 +659,11 @@ fade-in-on-scroll">Contactez-nous</h2>
                     <h3 class="text-primary-blue">Informations de 
 contact</h3> 
                     <p><i class="fas fa-phone-alt 
-text-secondary-orange"></i> Téléphone: +243 8X XXX XXXX</p> 
+text-secondary-orange"></i> Téléphone: +243 892555988, +243 979271125</p> 
                     <p><i class="fas fa-envelope 
-text-secondary-orange"></i> Email: info@mascoenergie.com</p> 
+text-secondary-orange"></i> Email: energiesmasco123@gmail.com</p> 
                     <p><i class="fas fa-map-marker-alt 
-text-secondary-orange"></i> Adresse: Kisangani, République 
-Démocratique du Congo</p> 
+text-secondary-orange"></i> Adresse: 7e avenue du 10 Octobre/ Makiso, Kisangani, RDC</p> 
  
                     <h3 class="text-primary-blue" style="margin-top: 
 1.5rem;">Suivez-nous</h3> 
@@ -566,7 +672,7 @@ Démocratique du Congo</p>
 target="_blank"><i class="fab fa-linkedin"></i></a> 
                         <a href="https://facebook.com" 
 target="_blank"><i class="fab fa-facebook-square"></i></a> 
-                        <a href="https://wa.me/243" target="_blank"><i 
+                        <a href="https://wa.me/243892555988" target="_blank"><i 
 class="fab fa-whatsapp-square"></i></a> 
                     </div> 
                 </div> 
@@ -594,8 +700,11 @@ src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15967.65363
     <footer> 
         <div class="container footer-content"> 
             <div> 
-                <p>© 2025 Masco Énergie et Construction. Desing By Optimum Entreprise. Tous droits 
+                <p>© 2025 Masco Énergie et Construction. Design By Optimum Entreprise. Tous droits 
 réservés.</p> 
+                <p style="margin-top: 0.5rem;">7e avenue du 10 Octobre/ Makiso, Kisangani, RDC</p>
+                <p style="margin-top: 0.5rem;">+243 892555988, +243 979271125</p>
+                <p style="margin-top: 0.5rem;">energiesmasco123@gmail.com</p>
                 <p style="margin-top: 0.5rem;">Construire l'Afrique, 
 Concevoir l'avenir.</p> 
             </div> 
@@ -683,13 +792,10 @@ document.getElementById('mobile-menu');
             // ensure initial active
             setActive(currentBackgroundIndex);
 
-            // Start rotation
-            const heroTimer = setInterval(changeHeroBackground, 5000);
+            // Start rotation with a faster delay
+            const heroTimer = setInterval(changeHeroBackground, 3000);
 
-            // Pause rotation when user focuses any interactive element inside hero
-            const hero = document.getElementById('hero');
-            hero?.addEventListener('mouseenter', ()=> clearInterval(heroTimer));
-            hero?.addEventListener('mouseleave', ()=> setInterval(changeHeroBackground, 5000));
+            // No pause on hover - removed mouseenter/mouseleave events
         })();
  
  

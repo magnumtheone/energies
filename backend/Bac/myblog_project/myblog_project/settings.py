@@ -31,7 +31,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-#@one!jnc*ba%%-fih^jug5y$+%5qgcf(lj95)q5bk*3zizkee')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']  # Pour Vercel, permettre tous les hosts
 
@@ -144,20 +144,14 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# Configuration pour Vercel
-if VERCEL_ENV:
-    STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, 'blog', 'static'),
-    ]
-    # Pas de STATIC_ROOT sur Vercel, les fichiers statiques sont servis directement
-else:
-    # Configuration pour développement local
-    STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, 'static'),
-        os.path.join(BASE_DIR, 'blog', 'static'),
-        os.path.join(BASE_DIR, '../../../frontend'),  # Chemin vers le dossier frontend
-    ]
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# Configuration simplifiée des fichiers statiques
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'blog', 'static'),
+]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Configuration pour servir les fichiers statiques avec WhiteNoise
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Media files (uploaded by users)
 MEDIA_URL = '/media/'
