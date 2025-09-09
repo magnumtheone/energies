@@ -1,0 +1,162 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ article.titre }} - Masco Énergie et Construction</title>
+    <link rel="icon" href="{% static 'blog/images/logo.png' %}" type="image/svg+xml">
+    
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'pages/style.css' %}">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+            color: #1a202c;
+        }
+        :root{--primary:#1a3a5e}
+        .text-primary{color:var(--primary)}
+        .bg-primary{background-color:var(--primary)}
+        .bg-primary-dark{background-color:#16314b}
+        .hover\:text-primary-dark:hover{color:#16314b}
+        
+        .prose {
+            max-width: none;
+        }
+        .prose h2 {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        .prose h3 {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 1.25rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .prose p {
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+        .prose ul {
+            margin: 1.5rem 0;
+            padding-left: 1.5rem;
+        }
+        .prose li {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- En-tête -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <nav class="max-w-6xl mx-auto px-4 flex items-center justify-between py-4">
+            <!-- Logo Masco -->
+            <a href="{% url 'home' %}" class="logo flex items-center">
+                <img src="{% static 'blog/images/logo.png' %}" alt="Masco Logo" class="h-10 w-10 mr-2">
+                <span style="color: #e67e22;" class="font-bold text-xl">MASCO</span>
+            </a>
+            
+            <!-- Navigation Desktop -->
+            <ul class="hidden md:flex items-center space-x-6 text-sm font-medium">
+                <li><a href="{% url 'home' %}#hero" class="hover:text-primary">Accueil</a></li>
+                <li><a href="{% url 'home' %}#about" class="hover:text-primary">À propos</a></li>
+                <li><a href="{% url 'home' %}#services" class="hover:text-primary">Services</a></li>
+                <li><a href="{% url 'home' %}#projects" class="hover:text-primary">Projets</a></li>
+                <li><a href="{% url 'accueil' %}" class="hover:text-primary">Blog</a></li>
+                <li><a href="{% url 'home' %}#contact" class="hover:text-primary">Contact</a></li>
+            </ul>
+            
+            <!-- Menu Mobile Button -->
+            <button id="mobile-menu-btn" class="md:hidden text-gray-700">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </nav>
+        
+        <!-- Menu mobile -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg py-4 px-6 space-y-4">
+            <a href="{% url 'home' %}#hero" class="block hover:text-primary">Accueil</a>
+            <a href="{% url 'home' %}#about" class="block hover:text-primary">À propos</a>
+            <a href="{% url 'home' %}#services" class="block hover:text-primary">Services</a>
+            <a href="{% url 'home' %}#projects" class="block hover:text-primary">Projets</a>
+            <a href="{% url 'accueil' %}" class="block hover:text-primary">Blog</a>
+            <a href="{% url 'home' %}#contact" class="block hover:text-primary">Contact</a>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-12">
+        <article class="bg-white p-8 md:p-12 rounded-lg shadow-lg">
+            <div class="mb-6">
+                <a href="{% url 'accueil' %}" class="inline-flex items-center text-primary hover:text-primary-dark font-medium">
+                    <i class="fas fa-arrow-left mr-2"></i>Retour aux articles
+                </a>
+            </div>
+            
+            <h1 class="text-4xl md:text-5xl font-extrabold text-primary mb-4">{{ article.titre }}</h1>
+            <div class="text-sm text-gray-500 mb-8 flex items-center space-x-4 border-b border-gray-200 pb-4">
+                <span><i class="fas fa-user-circle mr-1"></i> Par {{ article.auteur }}</span>
+                <span><i class="fas fa-calendar-alt mr-1"></i> Publié le {{ article.date_publication|date:"d F Y" }}</span>
+            </div>
+            
+            {% if article.image %}
+            <div class="mb-8">
+                <img src="{{ article.image.url }}" alt="{{ article.titre }}" class="w-full h-96 object-cover rounded-lg">
+            </div>
+            {% endif %}
+            
+            <div class="prose text-gray-700 leading-relaxed" style="font-size: 1.1rem;">
+                {{ article.contenu|safe|linebreaks }}
+            </div>
+            
+            <div class="mt-12 pt-8 border-t border-gray-200 flex justify-between items-center">
+                <a href="{% url 'accueil' %}" class="inline-flex items-center text-primary hover:text-primary-dark font-semibold transition-colors">
+                    <i class="fas fa-arrow-left mr-2"></i>Tous les articles
+                </a>
+                <a href="{% url 'home' %}#blog" class="inline-flex items-center bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition">
+                    <i class="fas fa-home mr-2"></i>Page d'accueil
+                </a>
+            </div>
+        </article>
+    </main>
+
+    <!-- Pied de page -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="md:flex md:justify-between md:items-center">
+                <div class="mb-6 md:mb-0">
+                    <h4 class="text-2xl font-bold mb-2">Masco Énergie et Construction</h4>
+                    <p class="text-gray-400">© <span id="current-year"></span> Masco Énergie et Construction. Tous droits réservés.</p>
+                    <p class="text-gray-400 mt-2">Construire l'Afrique, Concevoir l'avenir.</p>
+                </div>
+                <div class="flex gap-4">
+                    <a href="https://linkedin.com" target="_blank" class="text-gray-400 hover:text-white text-2xl transition-colors"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://facebook.com" target="_blank" class="text-gray-400 hover:text-white text-2xl transition-colors"><i class="fab fa-facebook-square"></i></a>
+                    <a href="https://wa.me/243" target="_blank" class="text-gray-400 hover:text-white text-2xl transition-colors"><i class="fab fa-whatsapp-square"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Définir l'année actuelle dans le pied de page
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+        });
+    </script>
+</body>
+</html>

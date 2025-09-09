@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Collège Maele — Articles</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style> body { font-family: 'Inter', sans-serif; background:#f7fafc; color:#1a202c; } </style>
+</head>
+<body>
+<header class="bg-white shadow sticky top-0 z-50">
+    <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+        <!-- Retour vers index.html -> section blog -->
+        <a href="{% url 'home' %}#blog" class="flex items-center gap-3 text-gray-900">
+            <i class="fa-solid fa-graduation-cap text-blue-600 text-2xl"></i>
+            <span class="font-bold text-lg">Collège Maele</span>
+        </a>
+        <nav class="hidden md:flex gap-6 text-gray-600">
+            <!-- accueil renvoie à index#blog ; contact renvoie à index#contact -->
+            <a href="{% url 'home' %}#blog" class="hover:text-blue-600">Accueil</a>
+            <a href="{% url 'home' %}#contact" class="hover:text-blue-600">Contact</a>
+        </nav>
+        <button class="md:hidden text-gray-700" aria-label="Ouvrir le menu mobile"><i class="fas fa-bars"></i></button>
+    </div>
+</header>
+
+<main class="container mx-auto px-6 py-12">
+    <header class="text-center mb-12">
+        <h1 class="text-3xl md:text-4xl font-extrabold text-blue-800">Derniers Articles</h1>
+        <p class="text-gray-600 mt-2 max-w-2xl mx-auto">Actualités, événements et publications du Collège Maele.</p>
+    </header>
+
+    <section class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {% for article in articles %}
+        <article class="bg-white rounded-xl shadow hover:shadow-xl overflow-hidden transition border">
+            <a href="{% url 'detail_article' id_article=article.id %}" class="block group">
+                {% if article.image %}
+                <img src="{{ article.image.url }}" alt="{{ article.titre }}" class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-300">
+                {% else %}
+                <img src="{% static 'blog/Images/default-article.jpg' %}" alt="{{ article.titre }}" class="w-full h-44 object-cover">
+                {% endif %}
+                <div class="p-5">
+                    <h2 class="text-lg font-semibold text-gray-900 mb-2">{{ article.titre }}</h2>
+                    <div class="text-sm text-gray-500 mb-3">
+                        <span class="mr-3"><i class="fas fa-calendar-alt mr-1"></i>{{ article.date_publication|date:"d F Y" }}</span>
+                        <span><i class="fas fa-user-circle mr-1"></i>{{ article.auteur }}</span>
+                    </div>
+                    <p class="text-gray-700 text-sm mb-4">{{ article.contenu|truncatewords:22 }}</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-blue-600 font-semibold">Lire la suite <i class="fas fa-arrow-right ml-2"></i></span>
+                        <span class="text-xs text-gray-400">{{ article.date_publication|timesince }} auparavant</span>
+                    </div>
+                </div>
+            </a>
+        </article>
+        {% empty %}
+        <div class="col-span-3 text-center text-gray-500">Aucun article pour le moment.</div>
+        {% endfor %}
+    </section>
+
+    <!-- Bouton pour retourner à la section blog de la page d'accueil principale -->
+    <div class="mt-8 text-center">
+        <a href="{% url 'home' %}#blog" class="inline-block bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-700 transition">
+            Voir la section Blog sur la page d'accueil
+        </a>
+    </div>
+</main>
+
+<footer class="bg-gray-900 text-white mt-12">
+    <div class="container mx-auto px-6 py-8 flex flex-col md:flex-row justify-between items-center">
+        <div>
+            <h4 class="font-bold text-lg">Collège Maele</h4>
+            <p class="text-gray-400 text-sm">© <span id="current-year"></span> Tous droits réservés.</p>
+        </div>
+        <div class="flex gap-4 mt-4 md:mt-0">
+            <!-- Réseaux sociaux : WhatsApp, Facebook, Instagram, LinkedIn -->
+            <a href="https://wa.me/243812345678" target="_blank" rel="noopener" class="text-green-400 hover:text-white text-2xl"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://facebook.com/collegemaele" target="_blank" rel="noopener" class="text-blue-600 hover:text-white text-2xl"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://instagram.com/collegemaele" target="_blank" rel="noopener" class="text-pink-500 hover:text-white text-2xl"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.linkedin.com/company/collegemaele" target="_blank" rel="noopener" class="text-sky-500 hover:text-white text-2xl"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+    </div>
+</footer>
+
+<script> document.getElementById('current-year').textContent = new Date().getFullYear(); </script>
+
+</body>
+</html>

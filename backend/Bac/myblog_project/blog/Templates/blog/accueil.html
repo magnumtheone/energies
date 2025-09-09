@@ -1,0 +1,215 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Masco Énergie et Construction — Articles</title>
+    <meta name="description" content="Découvrez nos derniers articles sur les projets d'infrastructure et de construction en RDC.">
+    <link rel="icon" href="{% static 'blog/images/logo.png' %}" type="image/svg+xml">
+    
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- Masco Design System -->
+    <link rel="stylesheet" href="{% static 'blog/css/masco-design-system.css' %}">
+</head>
+<body>
+<header class="masco-nav">
+    <nav class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+        <!-- Logo Masco -->
+        <a href="{% url 'home' %}" class="masco-logo">
+            <img src="{% static 'blog/images/logo.png' %}" alt="Masco Logo">
+            <span>MASCO</span>
+        </a>
+        
+        <!-- Navigation Desktop -->
+        <ul class="hidden md:flex items-center space-x-6 text-sm font-medium">
+            <li><a href="{% url 'home' %}#hero">Accueil</a></li>
+            <li><a href="{% url 'home' %}#about">À propos</a></li>
+            <li><a href="{% url 'home' %}#services">Services</a></li>
+            <li><a href="{% url 'home' %}#projects">Projets</a></li>
+            <li><a href="{% url 'home' %}#blog" class="text-primary font-semibold">Blog</a></li>
+            <li><a href="{% url 'home' %}#contact">Contact</a></li>
+        </ul>
+        
+        <!-- Menu Mobile Button -->
+        <button class="md:hidden text-primary" aria-label="Ouvrir le menu mobile">
+            <i class="fas fa-bars text-xl"></i>
+        </button>
+    </nav>
+</header>
+
+<main class="max-w-6xl mx-auto px-6 py-12">
+    <!-- Hero Section pour la page Articles -->
+    <section class="text-center mb-16 fade-in">
+        <div class="max-w-3xl mx-auto">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-primary mb-6">Nos Articles</h1>
+            <p class="text-xl text-masco-gray leading-relaxed">
+                Découvrez nos analyses approfondies, retours d'expérience de nos chantiers et actualités du secteur de la construction en RDC.
+            </p>
+        </div>
+    </section>
+
+    <!-- Grille d'articles -->
+    <section class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {% for article in articles %}
+        <article class="masco-card slide-up">
+            <a href="{% url 'detail_article' id_article=article.id %}" class="block group">
+                <!-- Image de l'article -->
+                <div class="relative overflow-hidden rounded-lg mb-4">
+                    {% if article.image %}
+                    <img src="{{ article.image.url }}" alt="{{ article.titre }}" class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300">
+                    {% else %}
+                    <img src="{% static 'images/default-article.jpg' %}" alt="{{ article.titre }}" class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300">
+                    {% endif %}
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                </div>
+                
+                <!-- Contenu de l'article -->
+                <div class="space-y-3">
+                    <!-- Métadonnées -->
+                    <div class="flex items-center text-sm text-masco-gray">
+                        <i class="fas fa-calendar-alt mr-2 text-orange"></i>
+                        <span class="mr-4">{{ article.date_publication|date:"d F Y" }}</span>
+                        <i class="fas fa-user-circle mr-2 text-orange"></i>
+                        <span>{{ article.auteur }}</span>
+                    </div>
+                    
+                    <!-- Titre -->
+                    <h2 class="text-xl font-bold text-primary group-hover:text-primary-dark transition-colors line-clamp-2">
+                        {{ article.titre }}
+                    </h2>
+                    
+                    <!-- Extrait -->
+                    <p class="text-masco-gray line-clamp-3 leading-relaxed">
+                        {{ article.contenu|truncatewords:25 }}
+                    </p>
+                    
+                    <!-- CTA -->
+                    <div class="flex items-center justify-between pt-2">
+                        <span class="text-orange font-semibold group-hover:text-orange-dark transition-colors">
+                            Lire l'article complet
+                            <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                        </span>
+                        <span class="text-xs text-masco-gray">
+                            {{ article.contenu|wordcount }} mots
+                        </span>
+                    </div>
+                </div>
+            </a>
+        </article>
+        {% empty %}
+        <div class="col-span-full text-center py-16">
+            <i class="fas fa-newspaper text-6xl text-masco-gray mb-4"></i>
+            <h3 class="text-2xl font-bold text-primary mb-2">Aucun article disponible</h3>
+            <p class="text-masco-gray">Les articles seront publiés prochainement.</p>
+        </div>
+        {% endfor %}
+    </section>
+
+    <!-- Navigation de retour -->
+    <div class="mt-16 text-center">
+        <a href="{% url 'home' %}#blog" class="btn-masco-primary">
+            <i class="fas fa-arrow-left mr-2"></i>
+            Retour à la page d'accueil
+        </a>
+    </div>
+</main>
+
+<footer class="masco-footer">
+    <div class="max-w-6xl mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+            <!-- Company Info -->
+            <div class="md:col-span-2">
+                <div class="flex items-center gap-3 mb-4">
+                    <img src="{% static 'images/logo.png' %}" alt="Masco Logo" class="w-8 h-8">
+                    <h4 class="font-bold text-xl text-orange">MASCO</h4>
+                </div>
+                <p class="text-gray-300 mb-4">Énergie et Construction</p>
+                <p class="text-gray-400 text-sm leading-relaxed">
+                    Conception, réalisation et accompagnement de projets d'infrastructure innovants en République Démocratique du Congo.
+                </p>
+            </div>
+
+            <!-- Quick Links -->
+            <div>
+                <h5 class="font-semibold mb-4">Navigation</h5>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="{% url 'home' %}#hero">Accueil</a></li>
+                    <li><a href="{% url 'home' %}#about">À propos</a></li>
+                    <li><a href="{% url 'home' %}#services">Services</a></li>
+                    <li><a href="{% url 'home' %}#blog">Blog</a></li>
+                    <li><a href="{% url 'accueil' %}" class="text-orange">Tous les articles</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact -->
+            <div>
+                <h5 class="font-semibold mb-4">Contact</h5>
+                <ul class="space-y-2 text-sm text-gray-400">
+                    <li class="flex items-center gap-2">
+                        <i class="fas fa-map-marker-alt text-orange"></i>
+                        <span>Kisangani, RDC</span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <i class="fas fa-phone text-orange"></i>
+                        <span>+243 8X XXX XXXX</span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <i class="fas fa-envelope text-orange"></i>
+                        <span>info@mascoenergie.com</span>
+                    </li>
+                </ul>
+                
+                <!-- Social Links -->
+                <div class="flex gap-3 mt-4">
+                    <a href="#" target="_blank" rel="noopener" class="text-xl">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="#" target="_blank" rel="noopener" class="text-xl">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" target="_blank" rel="noopener" class="text-xl">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="border-t border-primary-dark/30 pt-8 flex flex-col md:flex-row justify-between items-center">
+            <p class="text-gray-400 text-sm">© <span id="current-year"></span> Masco Énergie et Construction. Tous droits réservés.</p>
+            <p class="text-gray-500 text-xs mt-2 md:mt-0">Construire l'Afrique, Concevoir l'avenir.</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+// Année courante
+document.getElementById('current-year').textContent = new Date().getFullYear();
+
+// Animations d'apparition
+document.addEventListener('DOMContentLoaded', () => {
+    const animatedElements = document.querySelectorAll('.fade-in, .slide-up');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    animatedElements.forEach(element => observer.observe(element));
+});
+</script>
+
+</body>
+</html>

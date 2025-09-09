@@ -1,0 +1,76 @@
+# Django
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.so
+db.sqlite3
+db.sqlite3-journal
+
+# Django migrations
+**/migrations/__pycache__/
+**/migrations/*.pyc
+
+# Media files (keep only used ones)
+media/
+!media/articles/
+
+# Static files collected
+/static/
+staticfiles/
+
+# Environment variables
+.env
+.env.local
+.env.production
+.venv/
+venv/
+env/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Python
+*.egg-info/
+dist/
+build/
+
+# Logs
+*.log
+logs/
+
+# Cache
+.cache/
+.pytest_cache/
+
+# Temporary files
+*.tmp
+*.temp
+temp/
+
+# Archives non utilisées (gardées localement)
+**/images_unused/
+
+# Scripts de développement
+fix_*.py
+organize_*.py
+test_*.bat
+verifier_*.bat
+
+# Documentation temporaire
+DESIGN_UNIFORME_GUIDE.md
+INTEGRATION_IMAGES_VIDEOS_GUIDE.md

@@ -1,0 +1,218 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>{{ article.titre }} | Masco Énergie et Construction</title>
+    <meta name="description" content="{{ article.contenu|truncatewords:20 }}">
+    <link rel="icon" href="{% static 'images/logo.png' %}" type="image/svg+xml">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- Masco Design System -->
+    <link rel="stylesheet" href="{% static 'blog/css/masco-design-system.css' %}">
+</head>
+<body class="antialiased bg-gray-50">
+
+<header class="bg-white shadow-lg sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+        <!-- Logo Masco -->
+        <a href="{% url 'home' %}" class="flex items-center gap-3 text-gray-900 hover:text-primary transition-colors">
+            <img src="{% static 'images/logo.png' %}" alt="Masco Logo" class="w-8 h-8">
+            <span class="font-bold text-lg text-primary">MASCO</span>
+        </a>
+        <nav class="hidden md:flex gap-6 text-gray-600 text-sm font-medium">
+            <a href="{% url 'home' %}#hero" class="hover:text-primary transition-colors">Accueil</a>
+            <a href="{% url 'home' %}#about" class="hover:text-primary transition-colors">À propos</a>
+            <a href="{% url 'home' %}#services" class="hover:text-primary transition-colors">Services</a>
+            <a href="{% url 'home' %}#blog" class="hover:text-primary transition-colors">Blog</a>
+            <a href="{% url 'home' %}#contact" class="hover:text-primary transition-colors">Contact</a>
+        </nav>
+        <!-- Mobile menu button -->
+        <button class="md:hidden p-2 rounded text-primary">
+            <i class="fas fa-bars text-xl"></i>
+        </button>
+    </div>
+</header>
+
+<main class="container mx-auto px-6 py-10">
+    <!-- Hero / Banner -->
+    <section class="relative h-96 md:h-[500px] overflow-hidden mb-12">
+        <div class="hero-bg absolute inset-0"
+             style="background-image: url('{% if article.image %}{{ article.image.url }}{% else %}{% static 'images/default-article.jpg' %}{% endif %}');">
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+        <div class="relative z-10 h-full flex items-end">
+            <div class="max-w-6xl mx-auto px-6 pb-12 text-white">
+                <!-- Breadcrumb -->
+                <nav class="mb-4 text-sm">
+                    <a href="{% url 'home' %}" class="text-white/80 hover:text-white">Accueil</a>
+                    <span class="mx-2 text-white/60">/</span>
+                    <a href="{% url 'home' %}#blog" class="text-white/80 hover:text-white">Blog</a>
+                    <span class="mx-2 text-white/60">/</span>
+                    <span class="text-white">{{ article.titre|truncatewords:5 }}</span>
+                </nav>
+                
+                <h1 class="text-3xl md:text-5xl font-bold mb-4 leading-tight">{{ article.titre }}</h1>
+                <div class="flex flex-wrap items-center gap-6 text-white/90">
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>{{ article.date_publication|date:"d F Y" }}</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-user-circle"></i>
+                        <span>{{ article.auteur }}</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-clock"></i>
+                        <span>{{ article.contenu|wordcount }} mots • {% widthratio article.contenu|wordcount 200 1 %} min de lecture</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Article content -->
+    <div class="max-w-4xl mx-auto px-6">
+        <article class="bg-white rounded-2xl shadow-lg overflow-hidden">
+            <!-- Article body -->
+            <div class="p-8 md:p-12">
+                <div class="prose prose-lg max-w-none">
+                    <div class="text-gray-700 leading-relaxed text-lg">
+                        {{ article.contenu|linebreaks }}
+                    </div>
+                </div>
+
+                {% if article.videos.all %}
+                <div class="mt-12 pt-8 border-t border-gray-200">
+                    <h4 class="text-2xl font-bold text-primary mb-6">
+                        <i class="fas fa-video mr-2"></i>
+                        Vidéos associées
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {% for v in article.videos.all %}
+                            <div class="bg-gray-50 rounded-xl p-6 border border-gray-200">
+                                {% if v.fichier %}
+                                    <video controls class="w-full rounded-lg shadow-sm">
+                                        <source src="{{ v.fichier.url }}" type="video/mp4">
+                                        Votre navigateur ne supporte pas la vidéo.
+                                    </video>
+                                {% elif v.url %}
+                                    <a href="{{ v.url }}" target="_blank" rel="noopener" class="block bg-primary text-white text-center py-4 px-6 rounded-lg hover:bg-primary-dark transition-colors">
+                                        <i class="fas fa-external-link-alt mr-2"></i>
+                                        Voir la vidéo
+                                    </a>
+                                {% endif %}
+                                {% if v.titre %}
+                                    <h5 class="mt-4 font-semibold text-gray-800">{{ v.titre }}</h5>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Tags/Categories (if you add them later) -->
+                <div class="mt-12 pt-8 border-t border-gray-200">
+                    <div class="flex flex-wrap gap-2">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary">
+                            <i class="fas fa-tag mr-1"></i>
+                            Construction
+                        </span>
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary">
+                            <i class="fas fa-tag mr-1"></i>
+                            Infrastructure
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Navigation -->
+                <div class="mt-12 pt-8 border-t border-gray-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <a href="{% url 'home' %}#blog" class="inline-flex items-center gap-2 text-primary hover:text-primary-dark font-medium transition-colors">
+                        <i class="fas fa-arrow-left"></i> 
+                        Retour au Blog
+                    </a>
+                    <a href="{% url 'accueil' %}" class="inline-flex items-center gap-2 text-gray-600 hover:text-primary font-medium transition-colors">
+                        Tous les articles 
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </article>
+    </div>
+</main>
+
+<footer class="bg-primary text-white mt-20">
+    <div class="max-w-6xl mx-auto px-6 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+            <!-- Company Info -->
+            <div class="md:col-span-2">
+                <div class="flex items-center gap-3 mb-4">
+                    <img src="{% static 'images/logo.png' %}" alt="Masco Logo" class="w-8 h-8">
+                    <h4 class="font-bold text-xl">MASCO</h4>
+                </div>
+                <p class="text-gray-300 mb-4">Énergie et Construction</p>
+                <p class="text-gray-400 text-sm leading-relaxed">
+                    Conception, réalisation et accompagnement de projets d'infrastructure innovants en République Démocratique du Congo.
+                </p>
+            </div>
+
+            <!-- Quick Links -->
+            <div>
+                <h5 class="font-semibold mb-4">Navigation</h5>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="{% url 'home' %}#hero" class="text-gray-400 hover:text-white transition-colors">Accueil</a></li>
+                    <li><a href="{% url 'home' %}#about" class="text-gray-400 hover:text-white transition-colors">À propos</a></li>
+                    <li><a href="{% url 'home' %}#services" class="text-gray-400 hover:text-white transition-colors">Services</a></li>
+                    <li><a href="{% url 'home' %}#blog" class="text-gray-400 hover:text-white transition-colors">Blog</a></li>
+                    <li><a href="{% url 'accueil' %}" class="text-gray-400 hover:text-white transition-colors">Tous les articles</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact -->
+            <div>
+                <h5 class="font-semibold mb-4">Contact</h5>
+                <ul class="space-y-2 text-sm text-gray-400">
+                    <li class="flex items-center gap-2">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Kisangani, RDC</span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <i class="fas fa-phone"></i>
+                        <span>+243 8X XXX XXXX</span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <i class="fas fa-envelope"></i>
+                        <span>info@mascoenergie.com</span>
+                    </li>
+                </ul>
+                
+                <!-- Social Links -->
+                <div class="flex gap-3 mt-4">
+                    <a href="#" target="_blank" rel="noopener" class="text-gray-400 hover:text-white text-xl transition-colors">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="#" target="_blank" rel="noopener" class="text-gray-400 hover:text-white text-xl transition-colors">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" target="_blank" rel="noopener" class="text-gray-400 hover:text-white text-xl transition-colors">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="border-t border-primary-dark/30 pt-8 flex flex-col md:flex-row justify-between items-center">
+            <p class="text-gray-400 text-sm">© <span id="current-year"></span> Masco Énergie et Construction. Tous droits réservés.</p>
+            <p class="text-gray-500 text-xs mt-2 md:mt-0">Construire l'Afrique, Concevoir l'avenir.</p>
+        </div>
+    </div>
+</footer>
+
+<script> document.getElementById('current-year').textContent = new Date().getFullYear(); </script>
+</body>
+</html>
